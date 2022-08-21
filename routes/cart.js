@@ -4,8 +4,11 @@ const User=require('../models/user');
 const {Product}=require('../models/product');
 const {Cart}=require('../models/cart');
 const _=require('lodash');
+const auth=require('../middleware/auth');
 
-router.post('/',async (req,res)=>{
+//adding to cart
+
+router.post('/',auth,async (req,res)=>{
     // const product
 
 
@@ -46,6 +49,43 @@ router.post('/',async (req,res)=>{
         user.cart[index].quantity +=1;
         await user.save();
         return res.status(200).send('udpated to cart');
+    }
+    
+
+})
+
+
+
+// removing from cart 
+
+router.delete('/:id',auth,async (req,res)=>{
+    // const product
+
+
+    //finding if product exists or not
+    let product=await Product.findOne({_id:req.params.id});
+    if(!product){
+        return res.status(404).send('This product does not exist');
+    }
+
+
+    //finding user
+    let user=await User.findOne({_id:'6302072d4686338e3067415a'});
+
+
+    //finding if product already exists in the cart or not
+    const index=user.cart.findIndex(cartItem=>cartItem.item._id.equals(product._id));
+    console.log('index',index);
+
+    if(index>-1){
+
+        if(user.cart[index].quantity > 1) user.cart[index].quantity -=1;
+        else user.cart.splice(index,1);
+        await user.save();
+        res.status(200).send('Product removed from the cart');
+    }
+    else{
+        return res.status(400).send('This product not exits in the cart');
     }
     
 

@@ -2,8 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts } from './productsSlice';
 import DotLoader from "react-spinners/DotLoader";
-import { itemAdded } from '../Components/cart/cartSlice';
+import { itemAdded } from '../cart/cartSlice';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import swal from 'sweetalert';
+
 
 
 export default function ProductsList() {
@@ -24,6 +27,23 @@ export default function ProductsList() {
     return text.length > 20 ? text.substring(0, 20) + '...' : text;
   }
 
+  const addToCart=async (product)=>{
+    try {
+      const response=await axios.post('http://localhost:5000/api/cart',{prodId:product._id});
+      console.log('in try response',response);
+      // dispatch(itemAdded(product))
+    } catch (error) {
+      if(error.response.status==401) {
+        swal("Authentication Required", `You need to login to add things to your cart`, "error");
+      }
+      // console.log('authentication required');
+      // console.log('in cath response',error);
+      
+    }
+  }
+
+  
+
   return (
     <>
       <h1 className="my-3 text-center">Products</h1>
@@ -40,7 +60,7 @@ export default function ProductsList() {
                     {truncate(product.description)} ${product.price}
                   </p>
                 </div>
-                <button className="btn btn-primary my-4 mx-3" onClick={() => dispatch(itemAdded(product))}> Add to Cart</button>
+                <button className="btn btn-primary my-4 mx-3" onClick={() => addToCart(product)}> Add to Cart</button>
               </div>
             </div>
           })}

@@ -2,9 +2,10 @@
 import './App.css';
 import Cart from './Components/cart/Cart';
 import Navbar from './Components/Navbar';
-import ProductsList from './products/ProductsList';
+import ProductsList from './Components/products/ProductsList';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import SingleProduct from './products/SingleProduct';
+import SingleProduct from './Components/products/SingleProduct';
+import LoginForm from './Components/LoginForm';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Navbar />
         <div className="container">
           <Routes>
+            <Route exact path='/login' element={<LoginForm />} />
             <Route exact path='/cart' element={<Cart />} />
             <Route exact path='/products/:id' element={<SingleProduct />} />
             <Route exact path='/' element={<ProductsList />} />
