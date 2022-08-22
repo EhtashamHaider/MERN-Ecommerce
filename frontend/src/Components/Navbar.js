@@ -11,6 +11,7 @@ export default function Navbar() {
   const user = useSelector(state => state.user);
   const dispatch = useDispatch();;
   useEffect(() => {
+    console.log('navbar useeffect is called');
     user.isLoggedIn && dispatch(updateCart(user.token))
   }, [totalItems])
 

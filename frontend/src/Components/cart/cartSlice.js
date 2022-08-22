@@ -33,8 +33,15 @@ export const cartSlice = createSlice({
       console.log('In pending state');
     },
     [updateCart.fulfilled]: (state, { payload }) => {
+      let totalItems = 0;
+      payload.map(item => {
+        totalItems += item.quantity;
+      })
       console.log('payload', payload);
-      state.cart = [...payload];
+      state.cart = {
+        totalItems: totalItems,
+        cart: [...payload],
+      };
     }
 
   },
