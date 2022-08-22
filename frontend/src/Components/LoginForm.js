@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import {Link} from 'react-router-dom';
 // import {useState,}
 
 export default function LoginForm() {
@@ -56,6 +57,9 @@ export default function LoginForm() {
         <button type="submit" className="btn btn-primary" onClick={handleSubmit}>
           Login
         </button>
+        <Link to="/signup" class="btn btn-success mx-3" role="button">Register</Link>
+
+
       </form>
     </div>
   );
