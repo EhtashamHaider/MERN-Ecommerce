@@ -1,12 +1,19 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 // import 'bootstrap-icons/icons/cart3';
 import './navbar.css';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { updateCart } from './cart/cartSlice';
 
 
 export default function Navbar() {
-  const totalItems = useSelector(state => state.cart.length);
+  const totalItems = useSelector(state => state.cart.totalItems);
+  const user = useSelector(state => state.user);
+  const dispatch = useDispatch();;
+  useEffect(() => {
+    user.isLoggedIn && dispatch(updateCart(user.token))
+  }, [totalItems])
+
   return (
     <div><nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
       <Link className="navbar-brand" to="/">Kapra Khana</Link>
@@ -27,7 +34,8 @@ export default function Navbar() {
             </li>
           </ul>
         </ul>
-        <Link to="/login" class="btn btn-outline-success" role="button">Login</Link>
+        {!user.isLoggedIn ? <Link to="/login" class="btn btn-outline-success" role="button">Login</Link> : <h6 style={{ color: 'white' }}>Hello {user.userName}!</h6>}
+
       </div>
     </nav></div>
   )

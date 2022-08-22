@@ -13,36 +13,35 @@ export default function ProductsList() {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products);
   const navigate = useNavigate();
+  const token = useSelector(state => state.user.token);
 
   useEffect(() => {
     dispatch(fetchProducts());
-    // console.log('in use effect', products);
   }, [dispatch])
-
-  if (products.status === 'success') {
-    // console.log('after success ', products);
-  }
 
   const truncate = (text) => {
     return text.length > 20 ? text.substring(0, 20) + '...' : text;
   }
 
-  const addToCart=async (product)=>{
+  const addToCart = async (product) => {
     try {
-      const response=await axios.post('http://localhost:5000/api/cart',{prodId:product._id});
-      console.log('in try response',response);
-      // dispatch(itemAdded(product))
+      const response = await axios.post('http://localhost:5000/api/cart', { prodId: product._id }, {
+        headers: {
+          'x-auth-token': token,
+        }
+      }
+      );
+      console.log('in try response', response);
+      dispatch(itemAdded())
     } catch (error) {
-      if(error.response.status==401) {
+      if (error.response.status === 401) {
         swal("Authentication Required", `You need to login to add things to your cart`, "error");
       }
-      // console.log('authentication required');
-      // console.log('in cath response',error);
-      
+
     }
   }
 
-  
+
 
   return (
     <>

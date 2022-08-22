@@ -1,37 +1,48 @@
 import React, { useState } from "react";
 import axios from "axios";
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import swal from 'sweetalert';
+import { setUser } from './userData/userSlice';
+import { useDispatch } from "react-redux";
+import { useNavigate } from 'react-router-dom';
 // import {useState,}
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-//   const [name, setName] = useState("");
+  //   const [name, setName] = useState("");
+  const dispatch = useDispatch();
+  const Navigate = useNavigate();
 
+  const handleEmail = (e) => {
+    setEmail(e.target.value);
+  }
+  const handlePassword = (e) => {
+    setPassword(e.target.value);
+  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const { data } = await axios.post('http://localhost:5000/api/auths', { email: email, password: password });
+      dispatch(setUser(data));
+      Navigate('/');
+    } catch (error) {
+      console.log(error);
+      if (error.response.status === 400) {
+        return swal('Invalid Credentials!', error.response.data, 'error');
+      }
+      if (error.response.status === 401) {
+        return swal('Authentication Error!', 'Login Again', 'error');
+      }
 
-    const handleEmail=(e)=>{
-        setEmail(e.target.value);
     }
-    const handlePassword=(e)=>{
-        setPassword(e.target.value);
-    }
-    const handleSubmit=async (e)=>{
-        e.preventDefault();
-        try {
-            const response=await axios.post('http://localhost:5000/api/auths',{email:email,password:password});
-            // console.log(response.);
-            
-        } catch (error) {
-            console.log(error);
-            
-        }
-    }
+  }
   return (
     <div>
-      <form style={{marginTop:'10rem'}} className="w-50 mx-auto">
+      <form style={{ marginTop: '10rem' }} className="w-50 mx-auto">
         <h3>Login</h3>
         <div className="form-group">
-          <label for="exampleInputEmail1">Email address</label>
+          <label htmlFor="exampleInputEmail1">Email address</label>
           <input
             value={email}
             type="email"
@@ -44,7 +55,7 @@ export default function LoginForm() {
 
         </div>
         <div className="form-group">
-          <label for="exampleInputPassword1">Password</label>
+          <label htmlFor="exampleInputPassword1">Password</label>
           <input
             type="password"
             className="form-control"
