@@ -35,7 +35,7 @@ export default function ProductsList() {
     try {
       const response = await axios.post('http://localhost:5000/api/cart', { prodId: product._id }, {
         headers: {
-          'x-auth-token': token,
+          'x-auth-token': localStorage.getItem('userToken'),
         }
       }
       );
