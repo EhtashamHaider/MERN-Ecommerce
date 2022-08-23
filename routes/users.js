@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const _ = require('lodash');
-const auth = '../middleware/auth';
+const auth=require('../middleware/auth');
 
 router.post('/', async (req, res) => {
     let user = await User.findOne({ email: req.body.email });
@@ -25,7 +25,6 @@ router.post('/', async (req, res) => {
         await user.save();
         const token = user.getAuthToken();
         res.send({ ..._.pick(user, ['email', 'name']), token: token });
-        // res.header('x-auth-token',token).send(_.pick(user,['name','email','_id']));
 
     } catch (error) {
         res.status(500).send('Server error: ' + error);
@@ -34,11 +33,16 @@ router.post('/', async (req, res) => {
 });
 
 
-router.get('/', auth, async (req, res) => {
+router.get('/',auth, async(req, res) => {
 
-    const user = User.findOne({ _id: req.user.id });
-    if (!user) return res.status(404).send('User not found');
-    return res.status(200).send(_.pick(user, ['name', 'email']));
-})
+    try {
+        const user = await User.findOne({ _id: req.user.id });
+        if (!user) return res.status(404).send('User not found');
+        return res.status(200).send(_.pick(user, ['name', 'email']));
+        
+    } catch (error) {
+        return res.status(500).send('server Error');
+    }
+});
 
 module.exports = router;

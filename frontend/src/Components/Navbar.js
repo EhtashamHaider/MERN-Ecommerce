@@ -2,14 +2,20 @@ import React, { useEffect } from 'react'
 // import 'bootstrap-icons/icons/cart3';
 import './navbar.css';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { updateCart } from './cart/cartSlice';
+import {getUser} from './userData/userSlice';
 
 
 export default function Navbar() {
   const totalItems = useSelector(state => state.cart.totalItems);
   const user = useSelector(state => state.user);
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const Navigate= useNavigate();
+
+  useEffect(()=>{
+    localStorage.getItem('userToken') && dispatch(getUser(localStorage.getItem('userToken')));
+  },[])
 
   return (
     <div><nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
@@ -31,7 +37,9 @@ export default function Navbar() {
             </li>
           </ul>
         </ul>
-        {!localStorage.getItem('token') ? <Link to="/login" class="btn btn-outline-success" role="button">Login</Link> : <h6 style={{ color: 'white' }}>Hello {user.userName}!</h6>}
+        
+        {!localStorage.getItem('userToken') ? <Link to="/login" class="btn btn-outline-success" role="button">Login</Link> :<> <h6 style={{ color: 'white' }}>Hello {user.userName}!</h6> <button className="btn btn-outline-danger mx-3" role="button" onClick={()=>{localStorage.removeItem('userToken');window.location.reload();}}>Logout</button> </>}
+        
 
       </div>
     </nav></div>

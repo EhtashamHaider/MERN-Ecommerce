@@ -3,13 +3,11 @@ const router=express.Router();
 const mongoose=require('mongoose');
 const {Product}=require('../models/product');
 const _=require('lodash');
-// const router = require('express');
 
 router.post('/',async(req,res)=>{
 
     const product=new Product(_.pick(req.body,['title','price','description','category','image']));
 
-    // console.log(product);
     try {
         await product.save();
         res.status(200).send(product);
@@ -23,10 +21,8 @@ router.post('/',async(req,res)=>{
 router.get('/',async(req,res)=>{
     try {
         const products=await Product.find({}).select('title description price category image');
-        // console.log(products);
         res.status(200).send(products);
     } catch (error) {
-        // console.log(typeof req.params.id,req.params.id);
        res.status(500).send('Server Error:'+ error)
     }
 })

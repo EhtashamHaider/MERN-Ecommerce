@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { setUser } from './userData/userSlice';
+import { getUser } from './userData/userSlice';
 import { useNavigate } from 'react-router-dom';
 import swal from 'sweetalert';
 
@@ -17,6 +17,7 @@ export default function SignupFrom() {
   const Navigate = useNavigate();
 
 
+  //input handlers
   const handleEmail = (e) => {
     setEmail(e.target.value);
   }
@@ -30,8 +31,8 @@ export default function SignupFrom() {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:5000/api/users', { email: email, password: password, name: name });
-      console.log(response.data);
-      dispatch(setUser(response.data));
+      localStorage.setItem('userToken', response.data.token)
+      dispatch(getUser(localStorage.getItem('userToken')));
       Navigate('/');
     } catch (error) {
       if (error.response.status === 409) {
@@ -45,8 +46,6 @@ export default function SignupFrom() {
 
       }
 
-
-      // console.log(error.response.status);
 
     }
   }

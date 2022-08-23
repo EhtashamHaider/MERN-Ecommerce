@@ -3,12 +3,21 @@ import { useSelector, useDispatch } from 'react-redux';
 import { itemRemoved, itemAdded, updateCart } from './cartSlice';
 import './cart.css'
 import axios from 'axios';
+import swal from 'sweetalert';
 
 export default function Cart() {
   const dispatch = useDispatch();
+
+  //user cart
   const cartProducts = useSelector((state) => state.cart.cart);
+  
+  //total cart items
   const totalItems = useSelector(state => state.cart.totalItems);
+
+  //user details ---name, email
   const user = useSelector(state => state.user);
+
+
 
   let index = 0;
   let sum = 0;
@@ -20,6 +29,7 @@ export default function Cart() {
   }
 
 
+  //increment button to increase quantity on cart view
   const cartIncrement = async (prodId) => {
 
     try {
@@ -28,12 +38,17 @@ export default function Cart() {
           'x-auth-token': localStorage.getItem('userToken'),
         }
       });
+      //increments totalItems
       dispatch(itemAdded());
-    } catch (error) {
-      console.log('error occured in cartIncrement function in cartjs file');
 
+      
+    } catch (error) {
+      swal("Server Error","Increment failed","error")
     }
   }
+
+
+  // cart decrement button to decrement quantity by 1
   const cartDecrement = async (prodId) => {
 
     try {
@@ -42,16 +57,19 @@ export default function Cart() {
           'x-auth-token': localStorage.getItem('userToken'),
         }
       });
+      //derements total Items by 1
       dispatch(itemRemoved());
-    } catch (error) {
-      console.log('error occured in cartDecrement function in cartjs file');
 
+
+    } catch (error) {
+      swal("Server Error","Decrement failed","error")
     }
   }
 
+  //this use effect will store the db cart into redux state
   useEffect(() => {
     console.log('navbar useeffect is called');
-    user.isLoggedIn && dispatch(updateCart(localStorage.getItem('userToken')))
+    localStorage.getItem('userToken') && dispatch(updateCart(localStorage.getItem('userToken')))
 
   }, [totalItems]);
 

@@ -45,7 +45,6 @@ router.post('/', auth, async (req, res) => {
     }
     //updating user's cart
     else {
-        console.log('product already exits in the cart');
         user.cart[index].quantity += 1;
         await user.save();
         return res.status(200).send('udpated to cart');
@@ -56,13 +55,13 @@ router.post('/', auth, async (req, res) => {
 
 
 router.get('/', auth, async (req, res) => {
-    console.log('user id:', req.user.id);
+    // console.log('user id:', req.user.id);
     let user = await User.findOne({ _id: req.user.id });
     if (!user) {
         return res.status(404).send('User not found');
     }
 
-    console.log(user);
+    // console.log(user);
     const arr = [...user.cart];
     res.status(200).send(arr);
 })
@@ -88,7 +87,6 @@ router.delete('/:id', auth, async (req, res) => {
 
     //finding if product already exists in the cart or not
     const index = user.cart.findIndex(cartItem => cartItem.item._id.equals(product._id));
-    console.log('index', index);
 
     if (index > -1) {
 

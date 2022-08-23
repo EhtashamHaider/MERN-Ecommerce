@@ -5,11 +5,12 @@ import { itemAdded } from '../cart/cartSlice';
 import './singleProd.css'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import swal from 'sweetalert';
 
 
 
 export default function SingleProduct({ match }) {
-  const products = useSelector(state => { console.log('in use selector function'); return state.products; });
+  const products = useSelector(state => {  return state.products; });
   const user=useSelector(state=>state.user);
   const [singleProd, setProduct] = useState({});
   const { id } = useParams();
@@ -27,17 +28,25 @@ export default function SingleProduct({ match }) {
     try {
       const response=await axios.post('http://localhost:5000/api/cart',{prodId:prodId},{
           headers:{
-            'x-auth-token':user.token,
+            'x-auth-token':localStorage.getItem('userToken'),
           }
       });
       dispatch(itemAdded());
+
+
     } catch (error) {
-      console.log('error occured in addToCart function in singeProd.js file');
+      if (error.response.status === 401) {
+        swal("Authentication Required", `You need to login to add things to your cart`, "error");
+      }
+      else{
+        swal("Authentication Required", `You need to login to add things to your cart`, "error");
+
+      }
+
       
     }
 
   }
-  console.log(singleProd)
   return (
     <div className="row mt-6" style={{ marginTop: '7rem' }}>
       <div className="col-sm-6">

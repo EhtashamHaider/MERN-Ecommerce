@@ -14,23 +14,26 @@ export default function LoginForm() {
   const dispatch = useDispatch();
   const Navigate = useNavigate();
 
+
+  //handlers
   const handleEmail = (e) => {
     setEmail(e.target.value);
   }
+
   const handlePassword = (e) => {
     setPassword(e.target.value);
   }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const { data } = await axios.post('http://localhost:5000/api/auths', { email: email, password: password });
       localStorage.setItem('userToken', data.token)
-      console.log('token is set to localstorage');
-      console.log(typeof localStorage.getItem('userToken'));
       dispatch(getUser(localStorage.getItem('userToken')));
       Navigate('/');
-    } catch (error) {
-      console.log(error);
+    }
+    
+    catch (error) {
       if (error.response.status === 400) {
         return swal('Invalid Credentials!', error.response.data, 'error');
       }

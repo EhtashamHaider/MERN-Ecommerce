@@ -1,13 +1,21 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from 'axios';
+import swal from "sweetalert";
 
 export const getUser = createAsyncThunk('/getUser', async (token) => {
-    const response = axios.get('http://localhost:5000/api/users', {
-        headers: {
-            'x-auth-token': token,
-        }
-    });
-    return response.data;
+
+    try {
+        const response =await axios.get('http://localhost:5000/api/users', {
+            headers: {
+                'x-auth-token': token,
+            }
+        });
+        return response.data;
+        
+    } catch (error) {
+        swal("server Error",'getUser api failed','error');
+        
+    }
 
 })
 export const userSlice = createSlice({
@@ -20,23 +28,24 @@ export const userSlice = createSlice({
     },
     reducers: {
 
-        setUser: (state, { payload }) => {
-            state.token = payload.token;
-            state.isLoggedIn = true;
-            state.userName = payload.name;
-            state.userEmail = payload.email;
-        },
-        removeUser: (state) => {
-            state.token = "";
-            state.isLoggedIn = false;
-            state.userName = "";
-            state.userEmail = "";
-        }
+        // setUser: (state, { payload }) => {
+        //     state.token = payload.token;
+        //     state.isLoggedIn = true;
+        //     state.userName = payload.name;
+        //     state.userEmail = payload.email;
+        // },
+        // removeUser: (state) => {
+        //     state.token = "";
+        //     state.isLoggedIn = false;
+        //     state.userName = "";
+        //     state.userEmail = "";
+        // }
 
     },
     extraReducers: {
+        [getUser.pending]:(state,{payload})=>{
+        },
         [getUser.fulfilled]: (state, { payload }) => {
-            // state.token = payload;
             state.isLoggedIn = true;
             state.userName = payload.name;
             state.userEmail = payload.email;

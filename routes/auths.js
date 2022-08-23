@@ -6,14 +6,10 @@ const bcrypt = require('bcrypt');
 const _ = require('lodash');
 
 router.post('/', async (req, res) => {
-    console.log('in auth .js function');
     const user = await User.findOne({ email: req.body.email });
     if (!user) {
-        console.log('user not found')
         return res.status(400).send('Invalid email or password');
     }
-    console.log(user);
-    console.log(req.body.password, user.password);
     const isValidPassword = await bcrypt.compare(req.body.password, user.password);
 
 
