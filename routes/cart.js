@@ -83,7 +83,7 @@ router.delete('/:id', auth, async (req, res) => {
 
 
     //finding user
-    let user = await User.findOne({ _id: '6302072d4686338e3067415a' });
+    let user = await User.findOne({_id: req.user.id});
 
 
     //finding if product already exists in the cart or not

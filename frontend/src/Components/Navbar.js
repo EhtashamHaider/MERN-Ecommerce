@@ -9,11 +9,7 @@ import { updateCart } from './cart/cartSlice';
 export default function Navbar() {
   const totalItems = useSelector(state => state.cart.totalItems);
   const user = useSelector(state => state.user);
-  const dispatch = useDispatch();;
-  useEffect(() => {
-    console.log('navbar useeffect is called');
-    user.isLoggedIn && dispatch(updateCart(user.token))
-  }, [totalItems])
+  // const dispatch = useDispatch();
 
   return (
     <div><nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">

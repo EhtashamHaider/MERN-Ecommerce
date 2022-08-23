@@ -23,9 +23,10 @@ export const cartSlice = createSlice({
       state.totalItems += 1;
     },
     itemRemoved: (state, action) => {
-      const item = state.find(prod => prod.id == action.payload.id);
-      const index = state.indexOf(item);
-      state.splice(index, 1);
+      // const item = state.find(prod => prod.id == action.payload.id);
+      // const index = state.indexOf(item);
+      // state.splice(index, 1);
+      state.totalItems -=1;
     }
   },
   extraReducers: {
@@ -33,12 +34,13 @@ export const cartSlice = createSlice({
       console.log('In pending state');
     },
     [updateCart.fulfilled]: (state, { payload }) => {
+      console.log('into the updateCart.fulfilled');
       let totalItems = 0;
       payload.map(item => {
         totalItems += item.quantity;
       })
       console.log('payload', payload);
-      state.cart = {
+      return {
         totalItems: totalItems,
         cart: [...payload],
       };

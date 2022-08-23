@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts } from './productsSlice';
 import DotLoader from "react-spinners/DotLoader";
 import { itemAdded } from '../cart/cartSlice';
+import { updateCart } from '../cart/cartSlice';
+
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import swal from 'sweetalert';
@@ -14,10 +16,16 @@ export default function ProductsList() {
   const products = useSelector((state) => state.products);
   const navigate = useNavigate();
   const token = useSelector(state => state.user.token);
+  const user=useSelector(state=>state.user);
 
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch])
+  
+  useEffect(()=>{
+    console.log('navbar useeffect is called');
+    user.isLoggedIn && dispatch(updateCart(user.token))
+  },[])
 
   const truncate = (text) => {
     return text.length > 20 ? text.substring(0, 20) + '...' : text;

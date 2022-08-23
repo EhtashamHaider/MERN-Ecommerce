@@ -4,11 +4,13 @@ import { useParams } from 'react-router-dom';
 import { itemAdded } from '../cart/cartSlice';
 import './singleProd.css'
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 
 
 export default function SingleProduct({ match }) {
   const products = useSelector(state => { console.log('in use selector function'); return state.products; });
+  const user=useSelector(state=>state.user);
   const [singleProd, setProduct] = useState({});
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -19,6 +21,22 @@ export default function SingleProduct({ match }) {
     const product = products.products.find(p => p._id == id);
     setProduct(product);
   })
+
+  const addToCart=async (prodId)=>{
+
+    try {
+      const response=await axios.post('http://localhost:5000/api/cart',{prodId:prodId},{
+          headers:{
+            'x-auth-token':user.token,
+          }
+      });
+      dispatch(itemAdded());
+    } catch (error) {
+      console.log('error occured in addToCart function in singeProd.js file');
+      
+    }
+
+  }
   console.log(singleProd)
   return (
     <div className="row mt-6" style={{ marginTop: '7rem' }}>
@@ -36,7 +54,7 @@ export default function SingleProduct({ match }) {
         <h2>Description:</h2>
         <p>{singleProd.description}</p>
         <button className="btn btn-warning" onClick={() => navigate('/')}>Not interested</button>
-        <button className="btn btn-primary" onClick={() => dispatch(itemAdded(singleProd))}>Add to Cart</button>
+        <button className="btn btn-primary" onClick={() => addToCart(singleProd._id)}>Add to Cart</button>
       </div>
     </div>
   )
