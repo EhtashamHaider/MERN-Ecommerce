@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
-import { setUser } from './userData/userSlice';
+import { getUser } from './userData/userSlice';
 import { useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 // import {useState,}
@@ -24,7 +24,10 @@ export default function LoginForm() {
     e.preventDefault();
     try {
       const { data } = await axios.post('http://localhost:5000/api/auths', { email: email, password: password });
-      dispatch(setUser(data));
+      localStorage.setItem('userToken', data.token)
+      console.log('token is set to localstorage');
+      console.log(typeof localStorage.getItem('userToken'));
+      dispatch(getUser(localStorage.getItem('userToken')));
       Navigate('/');
     } catch (error) {
       console.log(error);

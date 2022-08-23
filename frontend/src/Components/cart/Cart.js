@@ -1,59 +1,59 @@
-import React,{useEffect} from 'react'
+import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
-import { itemRemoved,itemAdded,updateCart } from './cartSlice';
+import { itemRemoved, itemAdded, updateCart } from './cartSlice';
 import './cart.css'
 import axios from 'axios';
 
 export default function Cart() {
   const dispatch = useDispatch();
   const cartProducts = useSelector((state) => state.cart.cart);
-  const totalItems=useSelector(state=>state.cart.totalItems);
-  const user=useSelector(state=>state.user);
+  const totalItems = useSelector(state => state.cart.totalItems);
+  const user = useSelector(state => state.user);
 
   let index = 0;
   let sum = 0;
   const totalPrice = () => {
     cartProducts.map(product => {
-      sum += product.item.price*product.quantity;
+      sum += product.item.price * product.quantity;
     })
     return sum;
   }
 
 
-  const cartIncrement=async (prodId)=>{
-    
+  const cartIncrement = async (prodId) => {
+
     try {
-      const response=await axios.post('http://localhost:5000/api/cart',{prodId:prodId},{
-          headers:{
-            'x-auth-token':user.token,
-          }
+      const response = await axios.post('http://localhost:5000/api/cart', { prodId: prodId }, {
+        headers: {
+          'x-auth-token': localStorage.getItem('userToken'),
+        }
       });
       dispatch(itemAdded());
     } catch (error) {
       console.log('error occured in cartIncrement function in cartjs file');
-      
+
     }
   }
-  const cartDecrement=async (prodId)=>{
-    
+  const cartDecrement = async (prodId) => {
+
     try {
-      const response=await axios.delete(`http://localhost:5000/api/cart/${prodId}`,{
-          headers:{
-            'x-auth-token':user.token,
-          }
+      const response = await axios.delete(`http://localhost:5000/api/cart/${prodId}`, {
+        headers: {
+          'x-auth-token': localStorage.getItem('userToken'),
+        }
       });
       dispatch(itemRemoved());
     } catch (error) {
       console.log('error occured in cartDecrement function in cartjs file');
-      
+
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log('navbar useeffect is called');
-    user.isLoggedIn && dispatch(updateCart(user.token))
+    user.isLoggedIn && dispatch(updateCart(localStorage.getItem('userToken')))
 
-  },[totalItems]);
+  }, [totalItems]);
 
 
   // console.log(cartProducts);
@@ -75,14 +75,14 @@ export default function Cart() {
                   <p>{product.item.description}</p>
                   <div className="quantityHandler">
                     <span>
-                      <button className="btn btn-primary mx-3" onClick={()=>cartIncrement(product.item._id)}>+</button>
+                      <button className="btn btn-primary mx-3" onClick={() => cartIncrement(product.item._id)}>+</button>
                     </span>
                     <span>{product.quantity}</span>
                     <span>
-                      <button className="btn btn-danger mx-3" onClick={()=>cartDecrement(product.item._id)}>-</button>
+                      <button className="btn btn-danger mx-3" onClick={() => cartDecrement(product.item._id)}>-</button>
                     </span>
 
-                  </div>      
+                  </div>
                 </div>
               </li>);
             })}

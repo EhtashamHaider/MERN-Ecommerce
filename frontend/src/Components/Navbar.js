@@ -31,7 +31,7 @@ export default function Navbar() {
             </li>
           </ul>
         </ul>
-        {!user.isLoggedIn ? <Link to="/login" class="btn btn-outline-success" role="button">Login</Link> : <h6 style={{ color: 'white' }}>Hello {user.userName}!</h6>}
+        {!localStorage.getItem('token') ? <Link to="/login" class="btn btn-outline-success" role="button">Login</Link> : <h6 style={{ color: 'white' }}>Hello {user.userName}!</h6>}
 
       </div>
     </nav></div>

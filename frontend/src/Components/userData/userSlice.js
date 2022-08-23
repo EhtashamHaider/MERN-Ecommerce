@@ -1,5 +1,15 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from 'axios';
 
+export const getUser = createAsyncThunk('/getUser', async (token) => {
+    const response = axios.get('http://localhost:5000/api/users', {
+        headers: {
+            'x-auth-token': token,
+        }
+    });
+    return response.data;
+
+})
 export const userSlice = createSlice({
     name: 'user',
     initialState: {
@@ -9,6 +19,7 @@ export const userSlice = createSlice({
         userEmail: "",
     },
     reducers: {
+
         setUser: (state, { payload }) => {
             state.token = payload.token;
             state.isLoggedIn = true;
@@ -22,6 +33,15 @@ export const userSlice = createSlice({
             state.userEmail = "";
         }
 
+    },
+    extraReducers: {
+        [getUser.fulfilled]: (state, { payload }) => {
+            // state.token = payload;
+            state.isLoggedIn = true;
+            state.userName = payload.name;
+            state.userEmail = payload.email;
+
+        },
     }
 })
 

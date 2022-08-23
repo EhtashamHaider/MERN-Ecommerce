@@ -15,17 +15,17 @@ export default function ProductsList() {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products);
   const navigate = useNavigate();
-  const token = useSelector(state => state.user.token);
-  const user=useSelector(state=>state.user);
+  // const token = useSelector(state => state.user.token);
+  const user = useSelector(state => state.user);
 
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch])
-  
-  useEffect(()=>{
+
+  useEffect(() => {
     console.log('navbar useeffect is called');
-    user.isLoggedIn && dispatch(updateCart(user.token))
-  },[])
+    localStorage.getItem('userToken') && dispatch(updateCart(localStorage.getItem('userToken')))
+  }, [])
 
   const truncate = (text) => {
     return text.length > 20 ? text.substring(0, 20) + '...' : text;
