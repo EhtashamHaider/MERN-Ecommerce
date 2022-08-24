@@ -6,12 +6,13 @@ import './singleProd.css'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import swal from 'sweetalert';
+import { fetchProducts } from './productsSlice';
 
 
 
 export default function SingleProduct({ match }) {
-  const products = useSelector(state => {  return state.products; });
-  const user=useSelector(state=>state.user);
+  const products = useSelector(state => { return state.products; });
+  const user = useSelector(state => state.user);
   const [singleProd, setProduct] = useState({});
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -19,17 +20,27 @@ export default function SingleProduct({ match }) {
 
 
   useEffect(() => {
-    const product = products.products.find(p => p._id == id);
-    setProduct(product);
-  })
+    // dispatch(fechProducts());
+    async function getSingleProduct() {
+      try {
+        const response = await axios.get(`http://localhost:5000/api/products/${id}`);
+        console.log('iN useEffect of single Product data is:', response);
+        setProduct(response.data);
+      } catch (error) {
+        swal('Product Not found', "This product is out of stock", "error");
+        console.log('iN useEffect of single Product error is:', error);
+      }
+    }
+    getSingleProduct();
+  }, []);
 
-  const addToCart=async (prodId)=>{
+  const addToCart = async (prodId) => {
 
     try {
-      const response=await axios.post('http://localhost:5000/api/cart',{prodId:prodId},{
-          headers:{
-            'x-auth-token':localStorage.getItem('userToken'),
-          }
+      const response = await axios.post('http://localhost:5000/api/cart', { prodId: prodId }, {
+        headers: {
+          'x-auth-token': localStorage.getItem('userToken'),
+        }
       });
       dispatch(itemAdded());
 
@@ -38,12 +49,12 @@ export default function SingleProduct({ match }) {
       if (error.response.status === 401) {
         swal("Authentication Required", `You need to login to add things to your cart`, "error");
       }
-      else{
+      else {
         swal("Authentication Required", `You need to login to add things to your cart`, "error");
 
       }
 
-      
+
     }
 
   }

@@ -10,7 +10,7 @@ export default function Cart() {
 
   //user cart
   const cartProducts = useSelector((state) => state.cart.cart);
-  
+
   //total cart items
   const totalItems = useSelector(state => state.cart.totalItems);
 
@@ -41,9 +41,9 @@ export default function Cart() {
       //increments totalItems
       dispatch(itemAdded());
 
-      
+
     } catch (error) {
-      swal("Server Error","Increment failed","error")
+      swal("Server Error", "Increment failed", "error")
     }
   }
 
@@ -62,7 +62,7 @@ export default function Cart() {
 
 
     } catch (error) {
-      swal("Server Error","Decrement failed","error")
+      swal("Server Error", "Decrement failed", "error")
     }
   }
 
@@ -85,12 +85,12 @@ export default function Cart() {
           </svg></span>
           <ul className="list-unstyled my-3" style={{ borderTop: '1px solid black' }}>
             {cartProducts.map(product => {
-              return (<li className="media my-4" key={index++}>
+              return (<li className="media shadow my-4" key={index++} style={{ backgroundColor: 'white', padding: '2rem 10px', borderRadius: '5px', border: '1px solid #e3e3e3' }}>
                 <img src={`${product.item.image}`} height='140px' width='140px' className="mr-3 cartComponent" alt="" />
                 <div className="media-body">
                   <h5 className="mt-0 mb-1">{product.item.title}</h5>
                   <h3>{product.item.price}</h3>
-                  <p>{product.item.description}</p>
+                  <p className='text-left' style={{ color: '#4d5156' }}>{product.item.description}</p>
                   <div className="quantityHandler">
                     <span>
                       <button className="btn btn-primary mx-3" onClick={() => cartIncrement(product.item._id)}>+</button>
@@ -108,7 +108,7 @@ export default function Cart() {
 
         </div>
         <div className="col-sm-4 my-5">
-          <div className="cartDetails">
+          <div className="cartDetails shadow">
             <h3 className="text-center">Order Summary</h3>
             <div className="detailsRow">
               <span><b>Total Items:</b></span>

@@ -4,18 +4,27 @@ import './navbar.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { updateCart } from './cart/cartSlice';
-import {getUser} from './userData/userSlice';
+import { getUser } from './userData/userSlice';
+import { fetchProducts } from './products/productsSlice';
 
 
 export default function Navbar() {
   const totalItems = useSelector(state => state.cart.totalItems);
   const user = useSelector(state => state.user);
   const dispatch = useDispatch();
-  const Navigate= useNavigate();
+  const Navigate = useNavigate();
 
-  useEffect(()=>{
+
+  useEffect(() => {
+    console.log('real navbar useEffect is called');
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
+  useEffect(() => {
     localStorage.getItem('userToken') && dispatch(getUser(localStorage.getItem('userToken')));
-  },[])
+    localStorage.getItem("userToken") &&
+      dispatch(updateCart(localStorage.getItem("userToken")));
+  }, [])
 
   return (
     <div><nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
@@ -37,9 +46,9 @@ export default function Navbar() {
             </li>
           </ul>
         </ul>
-        
-        {!localStorage.getItem('userToken') ? <Link to="/login" class="btn btn-outline-success" role="button">Login</Link> :<> <h6 style={{ color: 'white' }}>Hello {user.userName}!</h6> <button className="btn btn-outline-danger mx-3" role="button" onClick={()=>{localStorage.removeItem('userToken');window.location.reload();}}>Logout</button> </>}
-        
+
+        {!localStorage.getItem('userToken') ? <Link to="/login" class="btn btn-outline-success" role="button">Login</Link> : <> <h6 style={{ color: 'white' }}>Hello {user.userName}!</h6> <button className="btn btn-outline-danger mx-3" role="button" onClick={() => { localStorage.removeItem('userToken'); window.location.reload(); }}>Logout</button> </>}
+
 
       </div>
     </nav></div>

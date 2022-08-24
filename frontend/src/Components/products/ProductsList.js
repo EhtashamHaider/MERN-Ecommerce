@@ -30,7 +30,7 @@ export default function ProductsList() {
   }, []);
 
   const truncate = (text) => {
-    return text.length > 20 ? text.substring(0, 20) + "..." : text;
+    return text.length > 50 ? text.substring(0, 50) + "..." : text;
   };
 
   //adding items to the cart
@@ -48,7 +48,7 @@ export default function ProductsList() {
       console.log("in try response", response);
       dispatch(itemAdded());
 
-      
+
     } catch (error) {
       if (error.response.status === 401) {
         swal(
@@ -63,31 +63,32 @@ export default function ProductsList() {
   return (
     <>
       <h1 className="my-3 text-center">Products</h1>
-      <div className="row my-4">
+      <div className="row mt-5">
         {products.status === "loading" ? (
           <DotLoader />
         ) : (
           products.products.map((product) => {
             return (
-              <div className="col-sm-3" key={product._id}>
-                <div className="card mt-3 p-4 h-100">
+              <div className="col-sm-4 mt-4" key={product._id}>
+                <div className="card mt-3 py-4 h-100 shadow" style={{ borderRadius: '5px' }}>
                   <img
                     src={`${product.image}`}
-                    style={{ cursor: "pointer" }}
-                    className="card-img-top"
+                    style={{ cursor: "pointer", width: '200px', height: '200px', objectFit: 'contain' }}
+                    className="card-img-top mx-auto"
                     alt="Hollywood Sign on The Hill"
                     onClick={() => {
                       navigate(`/products/${product._id}`);
                     }}
                   />
                   <div className="card-body">
-                    <h5 className="card-title">{product.title}</h5>
-                    <p className="card-text">
-                      {truncate(product.description)} ${product.price}
+                    <h5 className="card-title text-center">{product.title}</h5>
+                    <h5 className="text-center"> ${product.price} </h5>
+                    <p className="card-text" style={{ color: '#4d5156' }}>
+                      {truncate(product.description)}
                     </p>
                   </div>
                   <button
-                    className="btn btn-primary my-4 mx-3"
+                    className="btn btn-primary mt-2 mx-3"
                     onClick={() => addToCart(product)}
                   >
                     {" "}
