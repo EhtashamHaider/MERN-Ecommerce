@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import SingleProduct from './Components/products/SingleProduct';
 import LoginForm from './Components/LoginForm';
 import SignupFrom from './Components/SignupFrom';
+import Reviews from './Components/cart/Reviews';
 
 function App() {
   return (
@@ -17,7 +18,9 @@ function App() {
           <Routes>
           <Route exact path='/signup' element={<SignupFrom />} />
             <Route exact path='/login' element={<LoginForm />} />
-            <Route exact path='/cart' element={<Cart />} />
+            <Route exact path='/cart' element={<Cart />}>
+              <Route path=":id" element={<Reviews />} />
+            </Route>
             <Route exact path='/products/:id' element={<SingleProduct />} />
             <Route exact path='/' element={<ProductsList />} />
           </Routes>

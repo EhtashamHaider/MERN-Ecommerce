@@ -4,6 +4,9 @@ import { itemRemoved, itemAdded, updateCart } from './cartSlice';
 import './cart.css'
 import axios from 'axios';
 import swal from 'sweetalert';
+import {Routes,Link,Route,Outlet} from 'react-router-dom';
+import Reviews from './Reviews';
+
 
 export default function Cart() {
   const dispatch = useDispatch();
@@ -99,8 +102,9 @@ export default function Cart() {
                     <span>
                       <button className="btn btn-danger mx-3" onClick={() => cartDecrement(product.item._id)}>-</button>
                     </span>
-
                   </div>
+                  <Link to={`/cart/${product._id}`} class="btn btn-info" role="button" style={{position: "relative",left:'27rem',top:'10px'}}>Reviews</Link>
+
                 </div>
               </li>);
             })}
@@ -119,6 +123,7 @@ export default function Cart() {
               <span>${totalPrice().toFixed(2)}</span>
             </div>
             <button className="btn btn-dark">Place Order</button>
+            <Outlet />
           </div>
         </div>
       </div>
