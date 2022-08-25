@@ -8,6 +8,7 @@ import { updateCart } from "../cart/cartSlice";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import swal from "sweetalert";
+import './productsList.css';
 
 export default function ProductsList() {
   const dispatch = useDispatch();
@@ -69,7 +70,7 @@ export default function ProductsList() {
         ) : (
           products.products.map((product) => {
             return (
-              <div className="col-sm-4 mt-4" key={product._id}>
+              <div className="col-sm-4 mt-4 product" key={product._id}>
                 <div className="card mt-3 py-4 h-100 shadow" style={{ borderRadius: '5px' }}>
                   <img
                     src={`${product.image}`}

@@ -27,7 +27,7 @@ export default function SingleProduct({ match }) {
         console.log('iN useEffect of single Product data is:', response);
         setProduct(response.data);
       } catch (error) {
-        swal('Product Not found', "This product is out of stock", "error");
+        swal('Product Not found', "This product is out stock", "error");
         console.log('iN useEffect of single Product error is:', error);
       }
     }
@@ -63,16 +63,16 @@ export default function SingleProduct({ match }) {
       <div className="col-sm-6">
         <img className="singleProductComponent" src={`${singleProd.image}`} alt={`${singleProd.title}`} />
       </div>
-      <div className="col-sm-6 detail">
-        <h2>Title:</h2>
-        <p>{singleProd.title}</p>
-        <h2>Price:</h2>
-        <p>{singleProd.price}</p>
-        <h2>Category:</h2>
-        <p>{singleProd.category}</p>
+      <div className="col-sm-6 details shadow" style={{backgroundColor:'white'}}>
+        <h5>Title:</h5>
+        <p style={{ color: '#4d5156' }}>{singleProd.title}</p>
+        <h5>Price:</h5>
+        <p style={{ color: '#4d5156' }}>$ {singleProd.price}</p>
+        <h5>Category:</h5>
+        <p style={{ color: '#4d5156' }}>{singleProd.category}</p>
 
-        <h2>Description:</h2>
-        <p>{singleProd.description}</p>
+        <h5>Description:</h5>
+        <p className='text-left' style={{ color: '#4d5156' }}>{singleProd.description}</p>
         <button className="btn btn-warning" onClick={() => navigate('/')}>Not interested</button>
         <button className="btn btn-primary" onClick={() => addToCart(singleProd._id)}>Add to Cart</button>
       </div>

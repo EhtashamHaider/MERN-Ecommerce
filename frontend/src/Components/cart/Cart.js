@@ -86,7 +86,7 @@ export default function Cart() {
           <ul className="list-unstyled my-3" style={{ borderTop: '1px solid black' }}>
             {cartProducts.map(product => {
               return (<li className="media shadow my-4" key={index++} style={{ backgroundColor: 'white', padding: '2rem 10px', borderRadius: '5px', border: '1px solid #e3e3e3' }}>
-                <img src={`${product.item.image}`} height='140px' width='140px' className="mr-3 cartComponent" alt="" />
+                <img src={`${product.item.image}`} height='150px' width='150px' className="mr-3 cartComponent" alt="" />
                 <div className="media-body">
                   <h5 className="mt-0 mb-1">{product.item.title}</h5>
                   <h3>{product.item.price}</h3>

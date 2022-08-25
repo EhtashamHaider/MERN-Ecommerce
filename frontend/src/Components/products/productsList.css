@@ -1,0 +1,8 @@
+.product{
+    cursor:pointer;
+    transition:all;
+    transition-duration:0.5s ;
+}
+.product:hover{
+    transform:scale(1.03);
+}
