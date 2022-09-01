@@ -20,12 +20,13 @@ export default function ProductsList() {
 
   //use effect to fetch products from db
   useEffect(() => {
+    console.log('fecth products useeffect');
     dispatch(fetchProducts());
   }, [dispatch]);
 
   //useEffect to update Cart in case already logged in user
   useEffect(() => {
-    console.log("navbar useeffect is called");
+    console.log("updateCart use Effect");
     localStorage.getItem("userToken") &&
       dispatch(updateCart(localStorage.getItem("userToken")));
   }, []);
@@ -38,7 +39,7 @@ export default function ProductsList() {
   const addToCart = async (product) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/cart",
+        "http://localhost:3001/api/cart",
         { prodId: product._id },
         {
           headers: {
@@ -63,7 +64,7 @@ export default function ProductsList() {
 
   return (
     <>
-      <h1 className="my-3 text-center">Products</h1>
+      <h1 className="my-3 text-center">All Products</h1>
       <div className="row mt-5">
         {products.status === "loading" ? (
           <DotLoader />

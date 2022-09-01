@@ -6,7 +6,7 @@ const initialState = {
 };
 
 export const updateCart = createAsyncThunk('updateCart', async (token) => {
-  const response = await axios.get('http://localhost:5000/api/cart', {
+  const response = await axios.get('http://localhost:3001/api/cart', {
     headers: {
       'x-auth-token': token,
     }

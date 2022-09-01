@@ -30,7 +30,7 @@ export default function SignupFrom() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/users', { email: email, password: password, name: name });
+      const response = await axios.post('http://localhost:3001/api/users', { email: email, password: password, name: name });
       localStorage.setItem('userToken', response.data.token)
       dispatch(getUser(localStorage.getItem('userToken')));
       Navigate('/');

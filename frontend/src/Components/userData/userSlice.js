@@ -5,7 +5,7 @@ import swal from "sweetalert";
 export const getUser = createAsyncThunk('/getUser', async (token) => {
 
     try {
-        const response =await axios.get('http://localhost:5000/api/users', {
+        const response =await axios.get('http://localhost:3001/api/users', {
             headers: {
                 'x-auth-token': token,
             }

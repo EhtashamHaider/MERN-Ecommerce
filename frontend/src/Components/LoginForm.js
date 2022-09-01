@@ -27,7 +27,7 @@ export default function LoginForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('http://localhost:5000/api/auths', { email: email, password: password });
+      const { data } = await axios.post('http://localhost:3001/api/auths', { email: email, password: password });
       localStorage.setItem('userToken', data.token)
       dispatch(getUser(localStorage.getItem('userToken')));
       Navigate('/');

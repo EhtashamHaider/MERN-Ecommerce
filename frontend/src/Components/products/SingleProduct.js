@@ -23,7 +23,7 @@ export default function SingleProduct({ match }) {
     // dispatch(fechProducts());
     async function getSingleProduct() {
       try {
-        const response = await axios.get(`http://localhost:5000/api/products/${id}`);
+        const response = await axios.get(`http://localhost:3001/api/products/${id}`);
         console.log('iN useEffect of single Product data is:', response);
         setProduct(response.data);
       } catch (error) {
@@ -37,7 +37,7 @@ export default function SingleProduct({ match }) {
   const addToCart = async (prodId) => {
 
     try {
-      const response = await axios.post('http://localhost:5000/api/cart', { prodId: prodId }, {
+      const response = await axios.post('http://localhost:3001/api/cart', { prodId: prodId }, {
         headers: {
           'x-auth-token': localStorage.getItem('userToken'),
         }
